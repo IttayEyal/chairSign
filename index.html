@@ -102,6 +102,7 @@
         }
 
         function updateNumber(change) {
+            numberElement.style.fontSize = '1px'; // Minimize first so the new size doesn't mess up the view
             currentNumber += change;
             if (currentNumber < -2) {
                 currentNumber = -2;
