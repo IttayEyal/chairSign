@@ -72,7 +72,7 @@
     </div>
     <button class="button" id="flicker-button">🔥</button>
     <script>
-        let currentNumber = 10;
+        let currentNumber = 1;
         const numberElement = document.getElementById('number');
         const incrementButton = document.getElementById('increment');
         const decrementButton = document.getElementById('decrement');
@@ -81,8 +81,12 @@
         function adjustSize() {
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
-            const overflowFactorWidth = 1.0;
-            const overflowFactorHeight = 1.1;
+            overflowFactorWidth = 1.0;
+            overflowFactorHeight = 1.1;
+            if (currentNumber < 0) {
+                overflowFactorWidth = 0.9;
+                overflowFactorHeight = 0.9;
+            }
 
             let fontSize = 1;
             numberElement.style.fontSize = fontSize + 'px';
