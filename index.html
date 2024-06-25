@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Window Number - With Flicker Effect</title>
+    <title>Full Window Number - With Emoji Substitutions and Flicker Effect</title>
     <style>
         body, html {
             margin: 0;
@@ -81,8 +81,8 @@
         function adjustSize() {
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
-            const overflowFactorWidth = 1.1;
-            const overflowFactorHeight = 1.2;
+            const overflowFactorWidth = 1.0;
+            const overflowFactorHeight = 1.1;
 
             let fontSize = 1;
             numberElement.style.fontSize = fontSize + 'px';
@@ -99,8 +99,26 @@
 
         function updateNumber(change) {
             currentNumber += change;
-            numberElement.textContent = currentNumber;
+            if (currentNumber < -2) {
+                currentNumber = -2;
+            }
+            displayNumber();
             adjustSize();
+        }
+
+        function displayNumber() {
+            let displayValue;
+            switch (currentNumber) {
+                case -2:
+                    displayValue = '🔫';
+                    break;
+                case -1:
+                    displayValue = '⏰';
+                    break;
+                default:
+                    displayValue = currentNumber;
+            }
+            numberElement.textContent = displayValue;
         }
 
         function startFlicker() {
@@ -114,7 +132,10 @@
         decrementButton.addEventListener('click', () => updateNumber(-1));
         flickerButton.addEventListener('click', startFlicker);
 
-        window.addEventListener('load', adjustSize);
+        window.addEventListener('load', () => {
+            displayNumber();
+            adjustSize();
+        });
         window.addEventListener('resize', adjustSize);
     </script>
 </body>
