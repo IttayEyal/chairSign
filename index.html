@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Window Number - With Flicker Effect</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        #number {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            white-space: nowrap;
+            line-height: 0.9;
+        }
+        .button-container {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .teal-button {
+            background-color: teal;
+        }
+        #flicker-button {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background-color: orange;
+        }
+        @keyframes flicker {
+            0% { background-color: white; }
+            50% { background-color: red; }
+            100% { background-color: white; }
+        }
+        .flickering {
+            animation: flicker 0.1s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="number">10</div>
+    <div class="button-container">
+        <button class="button teal-button" id="decrement">-</button>
+        <button class="button teal-button" id="increment">+</button>
+    </div>
+    <button class="button" id="flicker-button">🔥</button>
+    <script>
+        let currentNumber = 10;
+        const numberElement = document.getElementById('number');
+        const incrementButton = document.getElementById('increment');
+        const decrementButton = document.getElementById('decrement');
+        const flickerButton = document.getElementById('flicker-button');
+
+        function adjustSize() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const overflowFactorWidth = 1.1;
+            const overflowFactorHeight = 1.2;
+
+            let fontSize = 1;
+            numberElement.style.fontSize = fontSize + 'px';
+
+            while (numberElement.offsetWidth <= windowWidth * overflowFactorWidth && 
+                   numberElement.offsetHeight <= windowHeight * overflowFactorHeight) {
+                fontSize++;
+                numberElement.style.fontSize = fontSize + 'px';
+            }
+
+            fontSize--;
+            numberElement.style.fontSize = fontSize + 'px';
+        }
+
+        function updateNumber(change) {
+            currentNumber += change;
+            numberElement.textContent = currentNumber;
+            adjustSize();
+        }
+
+        function startFlicker() {
+            document.body.classList.add('flickering');
+            setTimeout(() => {
+                document.body.classList.remove('flickering');
+            }, 1000);
+        }
+
+        incrementButton.addEventListener('click', () => updateNumber(1));
+        decrementButton.addEventListener('click', () => updateNumber(-1));
+        flickerButton.addEventListener('click', startFlicker);
+
+        window.addEventListener('load', adjustSize);
+        window.addEventListener('resize', adjustSize);
+    </script>
+</body>
+</html>
